@@ -1,39 +1,58 @@
 const express = require("express");
-const router = express.Router();
+const postRouter = express.Router();
 const db = require("../data/db.js")
 
 function clg(...x) {
 	for (let exes of x) console.log(exes);
 }
 
-router.use(express.json());
+postRouter.use(express.json());
 
-router.get("/", (req, res) => {
+postRouter.get("/", (req, res) => {
 	// basic READ all posts
 	db.find(req.query)
-	.then(posts => {
-		clg("GET posts");
-		res.status(200).json(posts);
-	})
-	.catch(error => {
-		res.status(500).json({
-			msg: "Error READing posts."
+		.then(posts => {
+			clg(">>> GET posts all");
+			res.status(200).json(posts);
+		})
+		.catch(error => {
+			res.status(500).json({
+				msg: "Error READing all posts."
+			});
 		});
 	});
-});
-
-router.post("/", (req, res) => {
-	// CREATE single new post
-	db.insert(req.body)
-	.then(post => {
-		res.status(201).json(post);
-	})
-	.catch(err => {
-		clg(err);
-		res.status(500).json({
-			msg: "Error CREATEing new post."
+	
+	postRouter.get("/:id", (req, res) => {
+		db.findById(req.params.id)
+		.then(post => {
+			clg(">>> GET one post");
+			post.length > 0
+				? res.status(200).json(post)
+				: res.status(404).json({ msg: "Nonexistant Post." })
 		})
-	})
+		.catch(err => {
+			clg(err);
+			res.status(500).json({
+				msg: "Error READing one single post."
+			})
+		})
 })
 
-module.exports = router;
+postRouter.post("/", (req, res) => {
+	// CREATE single new post
+	db.insert(req.body)
+		.then(post => {
+			clg(">>> POST new post");
+			res.status(201).json(post);
+		})
+		.catch(err => {
+			clg(err);
+			res.status(500).json({
+				msg: "Error CREATEing new post."
+			})
+		})
+})
+
+
+
+module.exports = postRouter;

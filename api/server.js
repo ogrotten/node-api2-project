@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("../data/db.js")
 const postRouter = require("../api/posts.js")
+const commentRouter = require("../api/comments.js")
 
 const server = express();
 
@@ -11,5 +12,6 @@ server.get("/", (req, res) => {
 });
 
 server.use("/api/posts", postRouter);
+server.use("/api/posts/:id/comments", commentRouter);
 
 module.exports = server;
