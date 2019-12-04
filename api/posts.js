@@ -1,6 +1,8 @@
 const express = require("express");
 const postRouter = express.Router();
 const db = require("../data/db.js")
+const commentRouter = require("./comments");
+
 
 function clg(...x) {
 	for (let exes of x) console.log(exes);
@@ -89,3 +91,4 @@ postRouter.delete("/:id", (req, res) => {
 })
 
 module.exports = postRouter;
+module.exports = commentRouter;

@@ -12,6 +12,6 @@ server.get("/", (req, res) => {
 });
 
 server.use("/api/posts", postRouter);
-server.use("/api/posts/:id/comments", commentRouter);
+// server.use("/api/posts/", commentRouter);
 
 module.exports = server;
