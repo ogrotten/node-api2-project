@@ -9,8 +9,8 @@ function clg(...x) {
 commentRouter.use(express.json());
 
 commentRouter.get("/:id/comments/", (req, res) => {
-	clg(req.params.id);
-	const exists = db.findById(req.params.id);
+	clg("Post exist?", (db.findById(req.params.id)).length);
+	const exists = (db.findById(req.params.id)).length;
 
 	if (exists) {
 		db.findPostComments(req.params.id)
